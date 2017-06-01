@@ -57,13 +57,9 @@ class RemoteFilesystem
     {
         $this->io = $io;
 
-        // Setup TLS options
-        // The cafile option can be set via config.json
-        if ($disableTls === false) {
-            $this->options = $this->getTlsDefaults($options);
-        } else {
+        // Always disable TLS
             $this->disableTls = true;
-        }
+        
 
         // handle the other externally set options normally.
         $this->options = array_replace_recursive($this->options, $options);
@@ -945,7 +941,7 @@ class RemoteFilesystem
 
         $context = StreamContextFactory::getContext($url, $options, array('options' => array(
             'ssl' => array(
-                'capture_peer_cert' => true,
+                'capture_peer_cert' => false,
                 'verify_peer' => false, // Yes this is fucking insane! But PHP is lame.
             ), ),
         ));
